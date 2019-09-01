@@ -1,0 +1,3 @@
+import webcam
+
+webcam.run()
