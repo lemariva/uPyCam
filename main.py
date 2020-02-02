@@ -35,11 +35,11 @@ while True:
     time.sleep_ms(100)
     # save photo
     timestamp = rtc.datetime()
-    time_str = '%4d%02d%02d%02d%02d%02d' %(timestamp[0:6])
+    time_str = '%4d%02d%02d%02d%02d%02d' %(timestamp[0], timestamp[1], timestamp[2], timestamp[4], timestamp[5], timestamp[6])
     f = open('sd/'+time_str+'.jpg', 'w')
     f.write(buf)
     time.sleep_ms(100)
     f.close()
 
     # sleep
-    time.sleep_ms(3000)
+    time.sleep_ms(1000)
