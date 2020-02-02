@@ -1,7 +1,6 @@
-# boot.py
 # wlan access
-ssid_ = <wlan-ssid>
-wp2_pass = <wlan-password>
+ssid_ = ""
+wp2_pass = ""
 
 ## ftp access
 #from ftp import ftpserver
