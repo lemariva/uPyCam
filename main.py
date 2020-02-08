@@ -7,25 +7,25 @@ from ftp import ftpserver
 #import webcam
 #webcam.run()
 
-# camera init
-led = machine.Pin(4, machine.Pin.OUT)
-camera.init()
-# sd mount
 try:
+    # camera init
+    led = machine.Pin(4, machine.Pin.OUT)
+    camera.init()
+    # sd mount
     spi = machine.SPI(1, baudrate=100000, phase=0, polarity=0, sck=machine.Pin(14), mosi=machine.Pin(15), miso=machine.Pin(2)) 
     sd = sdcard.SDCard(spi, machine.Pin(13))
     os.mount(sd, '/sd')
     os.listdir('/')
+    
+    # ntp sync for date
+    ntptime.settime()
+    rtc = machine.RTC()
+
+    # ftp for checking
+    u = ftpserver()
+    u.start_thread()
 except:
     machine.reset()
-
-# ntp sync for date
-ntptime.settime()
-rtc = machine.RTC()
-
-# ftp for checking
-u = ftpserver()
-u.start_thread()
 
 error_counter = 0
 while True:

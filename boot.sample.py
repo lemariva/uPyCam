@@ -1,3 +1,7 @@
+import network
+import machine
+import time
+
 # wlan access
 ssid_ = ""
 wpa2_pass = ""
