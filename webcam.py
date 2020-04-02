@@ -23,16 +23,14 @@ def index(req, resp):
         led.on()
 
     # Camera resilience - if we fail to init try to deinit and init again
-    if (not camera.init()): #{
+    if (not camera.init()):
         camera.deinit()
         await asyncio.sleep(1)
         # If we fail to init, return a 503
-        if (not camera.init()): #{
+        if (not camera.init()):
             yield from picoweb.start_response(resp, status=503)
             yield from resp.awrite('ERROR: Failed to initialise camera\r\n\r\n')
             return
-        #}
-    #}
 
     # wait for sensor to start and focus before capturing image
     await asyncio.sleep(2)
