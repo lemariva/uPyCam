@@ -31,7 +31,7 @@ def index(req, resp):
     led.off()
     camera.deinit()
 
-    if len(buf) > 0:
+    if type(buf) is bytes and len(buf) > 0:
         yield from picoweb.start_response(resp, "image/jpeg")
         yield from resp.awrite(buf)
     else:
