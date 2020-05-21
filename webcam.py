@@ -4,14 +4,14 @@ import picoweb
 import machine
 import time
 import uasyncio as asyncio
+from config import *
 
-led = machine.Pin(4, machine.Pin.OUT)
+led = machine.Pin(device_config['led'], machine.Pin.OUT)
 app = picoweb.WebApp('app')
 
 import ulogging as logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('app')
-
 
 @app.route('/')
 def index(req, resp):
