@@ -27,7 +27,7 @@ try:
     led = machine.Pin(4, machine.Pin.OUT)
     camera.init()
     # sd mount
-    spi = machine.SPI(1, baudrate=100000, 
+    spi = machine.SPI(-1, baudrate=100000, 
                     phase=0, polarity=0, 
                     sck=machine.Pin(device_config['sck']), 
                     mosi=machine.Pin(device_config['mosi']), 
