@@ -25,9 +25,13 @@ from config import *
 try:
     # camera init
     led = machine.Pin(4, machine.Pin.OUT)
-    camera.init()
+    camera.init(0, format=camera.JPEG)  # ESP32-CAM
+
+    #camera.init(0, d0=32, d1=35, d2=34, d3=5, d4=39, d5=18, d6=36, d7=19, 
+    #            href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21)   #M5CAMERA
+                
     # sd mount
-    spi = machine.SPI(-1, baudrate=100000, 
+    spi = machine.SPI(2, baudrate=100000, 
                     phase=0, polarity=0, 
                     sck=machine.Pin(device_config['sck']), 
                     mosi=machine.Pin(device_config['mosi']), 
