@@ -21,6 +21,7 @@
 import socket
 import network
 import uos
+from utime import localtime
 import gc
 
 try:
@@ -51,7 +52,7 @@ class ftpserver():
             path = path[:-(len(pattern) + 1)]
             if path == "": path = "/"
             for fname in sorted(uos.listdir(path), key = str.lower):
-                if fncmp(fname, pattern) == True:
+                if fncmp(fname, pattern):
                     dataclient.sendall(self.make_description(path, fname, full))
 
     def make_description(self, path, fname, full):
@@ -111,14 +112,14 @@ class ftpserver():
                     if (pi + 1) == len(pattern):
                         return True
                     while si < len(fname):
-                        if fncmp(fname[si:], pattern[pi+1:]) == True:
+                        if fncmp(fname[si:], pattern[pi+1:]):
                             return True
                         else:
                             si += 1
                     return False
                 else:
                     return False
-        if pi == len(pattern.rstrip("*"))  and si == len(fname):
+        if pi == len(pattern.rstrip("*")) and si == len(fname):
             return True
         else:
             return False
@@ -200,7 +201,7 @@ class ftpserver():
                                 cl.sendall("200 OK\r\n")
                             elif command == "FEAT":
                                 cl.sendall("211 no-features\r\n")
-                            elif command == "PWD":
+                            elif command == "PWD" or command == "XPWD":
                                 cl.sendall('257 "{}"\r\n'.format(cwd))
                             elif command == "CWD":
                                 try:
@@ -270,13 +271,13 @@ class ftpserver():
                                     cl.sendall(msg_250_OK)
                                 except:
                                     cl.sendall(msg_550_fail)
-                            elif command == "RMD":
+                            elif command == "RMD" or command == "XRMD":
                                 try:
                                     uos.rmdir(path)
                                     cl.sendall(msg_250_OK)
                                 except:
                                     cl.sendall(msg_550_fail)
-                            elif command == "MKD":
+                            elif command == "MKD" or command == "XMKD":
                                 try:
                                     uos.mkdir(path)
                                     cl.sendall(msg_250_OK)
@@ -295,6 +296,12 @@ class ftpserver():
                                     else:
                                         cl.sendall(msg_550_fail)
                                     fromname = None
+                            elif command == "MDTM":
+                                try:
+                                    tm=localtime(uos.stat(path)[8])
+                                    cl.sendall('213 {:04d}{:02d}{:02d}{:02d}{:02d}{:02d}\r\n'.format(*tm[0:6]))
+                                except:
+                                    cl.sendall('550 Fail\r\n')
                             elif command == "STAT":
                                 if payload == "":
                                     cl.sendall("211-Connected to ({})\r\n"

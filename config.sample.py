@@ -11,21 +11,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-
-device_config = {
-    'miso':2,
-    'mosi':15,
-    'ss':13,
-    'sck':14,
-    'led':26,
-}
 
 app_config = {
     'sleep-ms': 2000,
     'max-error': 10,
     'ftp': False,
+    'mode': 'MQTT', # mode -> 'MQTT' or 'microSD'
+    'camera': 'M5CAMERA',  # camera -> 'ESP32-CAM' or 'M5CAMERA'
+    'led': 14, # led -> 4: ESP32-CAM or 14: M5CAMERA
 }
+
+mqtt_config = {
+    'server': '192.168.178.147',
+    'client_id': 'esp32-camera',
+    'topic': b'Image'
+}
+
+microsd_config = {
+    'miso':2,
+    'mosi':15,
+    'ss':13,
+    'sck':14,
+}
+
 
 wifi_config = {
     'ssid':'',
