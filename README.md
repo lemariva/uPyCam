@@ -6,7 +6,7 @@ This repository includes an application example to stream video using MicroPytho
 Using a browser, you can connect to the board to see the video. 
 
 ## Timelapse
-The boards can be used as a portable timelapse cameras. Check out this repository for more code: [lemariva/uPyCam branch timelapse-camera](https://github.com/lemariva/uPyCam/tree/timelapse-camera)
+The boards can be used as portable timelapse cameras. Check out this repository for more code: [lemariva/uPyCam branch timelapse-camera](https://github.com/lemariva/uPyCam/tree/timelapse-camera)
 
 ## Firmware
 The MicroPython firmware was extended to add camera support. The firmware is located in this repository: [lemariva/micropython-camera-driver](https://github.com/lemariva/micropython-camera-driver).
