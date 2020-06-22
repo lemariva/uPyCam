@@ -1,0 +1,1 @@
+The firmware was moved to the following Github repository: [lemariva/micropython-camera-driver](https://github.com/lemariva/micropython-camera-driver)
