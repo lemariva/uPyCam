@@ -11,7 +11,7 @@ The photo can be saved on a microSD (ESP32-CAM) or sent it to an MQTT Broker (M5
 [![Portable time-lapse camera using an ESP32-CAM running MicroPython](https://img.youtube.com/vi/qW25Bx1nzLo/0.jpg)](https://www.youtube.com/watch?v=qW25Bx1nzLo)
 
 ### M5Camera
-[![Timelapse video using MicroPython and an M5Camera](https://img.youtube.com/vi/ronoPg3WXs8/0.jpg)](https://www.youtube.com/watch?v=ronoPg3WXs8)
+[![Timelapse video using MicroPython and an M5Camera](https://img.youtube.com/vi/Tg4jIyBU5zE/0.jpg)](https://www.youtube.com/watch?v=Tg4jIyBU5zE)
 
 ## Firmware
 The MicroPython firmware was extended to add camera support. The firmware is located in this repository: [lemariva/micropython-camera-driver](https://github.com/lemariva/micropython-camera-driver).
