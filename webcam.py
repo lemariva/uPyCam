@@ -27,7 +27,7 @@ def index(req, resp):
         camera.deinit()
         await asyncio.sleep(1)
         # If we fail to init, return a 503
-        if (not camera.init()):
+        if (not camera.init(0, format=camera.JPEG)):
             yield from picoweb.start_response(resp, status=503)
             yield from resp.awrite('ERROR: Failed to initialise camera\r\n\r\n')
             return
