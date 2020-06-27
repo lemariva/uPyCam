@@ -16,3 +16,10 @@ Follow these articles to get more information:
 * [MicroPython: M5CAMERA timelapse over MQTT](https://lemariva.com/blog/2020/06/micropython-m5camera-timelapse-over-mqtt)
 
 Note: If they are not available, they will be published in the next days.
+
+## Web-browser
+You can choose between a photo or streaming mode:
+* Photo mode: `http://<<board-ip>>`
+* Streaming mode: `http://<<board-ip>>/?stream=true`
+
+Streaming mode added by [Krayon](https://github.com/krayon/upyesp32cam/commit/8b63edec50dca9416bb4b2b75207ac53788c597a). Thanks! 
