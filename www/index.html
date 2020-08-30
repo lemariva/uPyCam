@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>ESP32 Camera</title>
+    <meta name="robots" content="index,follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript">     
+      function isNumber(evt) {
+              evt = (evt) ? evt : window.event;
+              var charCode = (evt.which) ? evt.which : evt.keyCode;
+              if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+                  return false;
+              }
+              return true;
+          }
+      </script>
+  </head>
+  <body onload="updateForm()">
+    <div class="container content">
+      <div class="page-header">
+        <img src="logo.svg" alt="LeMaRiva|tech">
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <img src='stream/d' onload='imageRefresh(this, 30);' style="width: 100%;">
+          <form id="uPyCam">
+            <section class="section-preview">
+              <div class="form-group">
+                <label for="formSize">Frame size</label>
+                <select class="selectpicker" id="formSize" style="width: 100%;">
+                  <option value="0">96X96</option>
+                  <option value="1">QQVGA</option>
+                  <option value="2">QCIF</option>
+                  <option value="3">HQVGA</option>
+                  <option value="4">240X240</option>
+                  <option value="5">QVGA</option>
+                  <option value="6">CIF</option>
+                  <option value="7">HVGA</option>
+                  <option value="8">VGA</option>
+                  <option value="9">SVGA</option>
+                  <option value="10">XGA</option>
+                  <option value="11">HD</option>
+                  <option value="12">SXGA</option>
+                  <option value="13">UXGA</option>
+                  <option value="14">FHD</option>
+                  <option value="15">P_HD</option>
+                  <option value="16">P_3MP</option>
+                  <option value="17">QXGA</option>
+                  <option value="18">QHD</option>
+                  <option value="19">WQXGA</option>
+                  <option value="20">P_FHD</option>
+                  <option value="21">QSXGA</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="formSaturation">Saturation (-2, 2):</label>
+                <input type="range" min="0" max="4" value="2" step="1" class="slider custom-range" id="formSaturation" style="width: 100%;">
+              </div>
+              <div class="form-group">
+                <label for="formBrightness">Brightness (-2, 2):</label>
+                <input type="range" min="0" max="4" value="2" step="1" class="slider custom-range" id="formBrightness" style="width: 100%;">
+              </div>
+              <div class="form-group">
+                <label for="formContrast">Contrast (-2, 2):</label>
+                <input type="range" min="0" max="4" value="2" step="1" class="slider custom-range" id="formContrast" style="width: 100%;">
+              </div>
+              <div class="form-group">
+                <label for="formQuality">Quality (10-high, 63-low):</label>
+                <input type="range" min="10" max="63" value="10" step="1" class="slider custom-range" id="formQuality" style="width: 100%;">
+              </div>
+              <div class="form-group">
+                <label for="forvFlip">vFlip:</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="forvFlip" id="forvFlipR" value="vFlipR" checked>
+                  <label class="form-check-label" for="forvFlipR">Off</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="forvFlip" id="forvFlipL" value="vFlipL">
+                  <label class="form-check-label" for="forvFlipL">On</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="forhFlip">hFlip:</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="forhFlip" id="forhFlipU" value="hFlipU" checked>
+                  <label class="form-check-label" for="forhFlipU">Off</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="forhFlip" id="forhFlipD" value="vFlipD">
+                  <label class="form-check-label" for="forhFlipD">On</label>
+                </div>
+              </div>
+              <div class="form-check">
+                <button class="btn btn-primary" type="button" onclick="submitForm()">Configure</button>
+              </div>
+            </section>
+          </form>
+        </div>
+      </div>
+
+        <footer class="footer">
+          <div class="container">
+            <span class="text-muted"><a href="https://lemariva.com">LeMaRiva|tech</a></span>
+          </div>
+        </footer>
+    </div>
+
+    <script language="javascript"> 
+      var update_track = 0;
+      var update_input = 0;
+      var uPyCam = document.getElementById("uPyCam");
+
+      function imageRefresh(img, timeout) {
+        setTimeout(function() {
+        var d = new Date;
+        var http = img.src;
+        if (http.indexOf("/d") != -1) { http = http.split("/d")[0]; } 
+
+        img.src = http + '/d' + d.getTime();
+        }, timeout);
+      }
+
+      function updateForm() {
+          var xhttp = new XMLHttpRequest();
+          
+          xhttp.open("GET", "upy", true);
+          xhttp.send();
+
+          xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200 
+          && (!update_input || this_update == update_input)) {
+            update_input = 0;
+            var obj = JSON.parse(this.response);
+
+            uPyCam.formSaturation.value = (obj.saturation + 2);
+            uPyCam.formBrightness.value  =  (obj.brightness + 2);
+            uPyCam.formContrast.value  =  (obj.contrast + 2);
+            uPyCam.formQuality.value = obj.quality;
+            uPyCam.formSize.value = obj.framesize;
+
+            if (obj.vflip) {
+              uPyCam.forvFlipL.checked = true;
+              uPyCam.forvFlipR.checked = false;
+            }else{
+              uPyCam.forvFlipL.checked = false;
+              uPyCam.forvFlipR.checked = true;
+            }
+            if (obj.hflip) {
+              uPyCam.forhFlipU.checked = true;
+              uPyCam.forhFlipD.checked = false;
+            }else{
+              uPyCam.forhFlipU.checked = false;
+              uPyCam.forhFlipD.checked = true;
+            }
+
+
+          }
+        };
+      }
+      function submitForm() {
+        update_track++;
+
+        saturation = uPyCam.formSaturation.value;
+        brightness = uPyCam.formBrightness.value;
+        contrast = uPyCam.formContrast.value;
+        quality = uPyCam.formQuality.value;
+        vflip = uPyCam.forvFlipR.checked ? 1 : 0;
+        hflip = uPyCam.forhFlipU.checked ? 1 : 0;
+        framesize = uPyCam.formSize.value;
+
+        var this_update = update_track;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200 
+          && (!update_input || this_update == update_input)) {
+            update_input = 0;
+          }
+        };
+          xhttp.open("GET", "upy/" + saturation + "/" + brightness + "/" + contrast +
+                            "/" + quality + "/" + vflip + "/" + hflip + "/" + framesize, true);
+          xhttp.send();
+      }
+
+    </script>    
+    
+  </body>
+</html>
+
