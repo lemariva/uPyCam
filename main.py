@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import uos
 import machine 
 
 import ntptime
@@ -21,9 +21,7 @@ import camera
 from ftp import ftpserver
 from config import *
 
-if app_config['mode'] == 'microSD':
-    import sdcard
-elif  app_config['mode'] == 'MQTT':
+if  app_config['mode'] == 'MQTT':
     from umqtt.simple2 import MQTTClient
 
 try:
@@ -38,15 +36,13 @@ try:
     
     if app_config['mode'] == 'microSD':
         # sd mount
-        spi = machine.SPI(2, baudrate=100000, 
-                        phase=0, polarity=0, 
-                        sck=machine.Pin(microsd_config['sck']), 
-                        mosi=machine.Pin(microsd_config['mosi']), 
-                        miso=machine.Pin(microsd_config['miso'])) 
-
-        sd = sdcard.SDCard(spi, machine.Pin(microsd_config['ss']))
-        os.mount(sd, '/sd')
-        os.listdir('/')
+        sd = machine.SDCard(slot=3, width=1, 
+                            sck=machine.Pin(microsd_config['sck']),
+                            mosi=machine.Pin(microsd_config['mosi']),
+                            miso=machine.Pin(microsd_config['miso']),
+                            cs=machine.Pin(microsd_config['ss']))
+        uos.mount(sd, '/sd')
+        #uos.listdir('/')
     elif  app_config['mode'] == 'MQTT':
         c = MQTTClient(mqtt_config['client_id'], mqtt_config['server'])
         c.connect()
