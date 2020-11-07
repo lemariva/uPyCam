@@ -29,7 +29,7 @@ class webcam():
         self.contrast = 0
         self.vflip = 0
         self.hflip = 0
-        self.framesize = 8
+        self.framesize = camera.FRAMESIZE_VGA
 
         self.routeHandlers = [
             ("/", "GET", self._httpHandlerIndex),
@@ -45,12 +45,12 @@ class webcam():
 
         # Camera resilience - if we fail to init try to deinit and init again
         if app_config['camera'] == 'ESP32-CAM':
-            camera.init(0, format=camera.JPEG)      #ESP32-CAM
+            camera.init(0, format=camera.JPEG, framesize=self.framesize)      #ESP32-CAM
 
         elif app_config['camera'] == 'M5CAMERA':
-            camera.init(0, d0=32, d1=35, d2=34, d3=5, d4=39, d5=18, d6=36, d7=19,
-                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21)   #M5CAMERA  
-        camera.framesize(self.framesize)
+            camera.init(0, format=camera.JPEG, framesize=self.framesize, d0=32, d1=35, d2=34, d3=5, d4=39, 
+                    d5=18, d6=36, d7=19, href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21)   #M5CAMERA  
+
 
         mws = MicroWebSrv(routeHandlers=self.routeHandlers, webPath="www/")
         mws.Start(threaded=True)
