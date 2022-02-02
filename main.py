@@ -29,10 +29,10 @@ try:
     led = machine.Pin(app_config['led'], machine.Pin.OUT)
 
     if app_config['camera'] == 'ESP32-CAM':
-        camera.init(0, format=camera.JPEG)  # ESP32-CAM
+        camera.init(0, format=camera.JPEG, fb_location=camera.PSRAM)  # ESP32-CAM
     elif app_config['camera'] == 'M5CAMERA':
         camera.init(0, d0=32, d1=35, d2=34, d3=5, d4=39, d5=18, d6=36, d7=19,
-                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21)   #M5CAMERA
+                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21, fb_location=camera.PSRAM)   #M5CAMERA
     
     if app_config['mode'] == 'microSD':
         # sd mount
