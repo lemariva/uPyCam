@@ -26,22 +26,22 @@ def index(req, resp):
         
     # Camera resilience - if we fail to init try to deinit and init again
     if app_config['camera'] == 'ESP32-CAM':
-        if (not camera.init(0, format=camera.JPEG)):
+        if (not camera.init(0, format=camera.JPEG, fb_location=camera.PSRAM)):
             camera.deinit()
             await asyncio.sleep(1)
             # If we fail to init, return a 503
-            if (not camera.init(0, format=camera.JPEG)):  
+            if (not camera.init(0, format=camera.JPEG, fb_location=camera.PSRAM)):  
                 yield from picoweb.start_response(resp, status=503)
                 yield from resp.awrite('ERROR: Failed to initialise camera\r\n\r\n')
                 return
     elif app_config['camera'] == 'M5CAMERA':
         if (not camera.init(0, d0=32, d1=35, d2=34, d3=5, d4=39, d5=18, d6=36, d7=19,
-                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21)):
+                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21, fb_location=camera.PSRAM)):
             camera.deinit()
             await asyncio.sleep(1)
             # If we fail to init, return a 503
             if (not camera.init(0, d0=32, d1=35, d2=34, d3=5, d4=39, d5=18, d6=36, d7=19,
-                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21)):   #M5CAMERA  
+                    href=26, vsync=25, reset=15, sioc=23, siod=22, xclk=27, pclk=21, fb_location=camera.PSRAM)):   #M5CAMERA  
                 yield from picoweb.start_response(resp, status=503)
                 yield from resp.awrite('ERROR: Failed to initialise camera\r\n\r\n')
                 return
